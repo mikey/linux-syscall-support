@@ -4250,6 +4250,8 @@ struct kernel_statfs {
       LSS_REG(2, buf);
       LSS_BODY(void*, mmap2, "0"(__r2));
     }
+#elif defined(__PPC64__)
+    /* no mmap2 on ppc64 */
 #else
     #define __NR__mmap2 __NR_mmap2
     LSS_INLINE _syscall6(void*, _mmap2,            void*, s,
@@ -4361,7 +4363,7 @@ struct kernel_statfs {
   #if defined(__i386__) ||                                                    \
       defined(__ARM_ARCH_3__) || defined(__ARM_EABI__) ||                     \
      (defined(__mips__) && _MIPS_SIM == _MIPS_SIM_ABI32) ||                   \
-      defined(__PPC__) ||                                                     \
+      defined(__PPC32__) ||                                                   \
      (defined(__s390__) && !defined(__s390x__))
     /* On these architectures, implement mmap() with mmap2(). */
     LSS_INLINE void* LSS_NAME(mmap)(void *s, size_t l, int p, int f, int d,
